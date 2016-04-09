@@ -50,7 +50,7 @@
 							<span class="icon-bar"></span>
 						</button>
 
-						<a class="btn btn-navbar-cancel navbar-btn pull-left tip" href="{{ route('admin.sanatorium.shop.products.all') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.cancel') }}}">
+						<a class="btn btn-navbar-cancel navbar-btn pull-left tip" href="{{ route('admin.sanatorium.categories.categories.all') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.cancel') }}}">
 							<i class="fa fa-reply"></i> <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
 						</a>
 
@@ -64,7 +64,7 @@
 
 							@if ($category->exists)
 							<li>
-								<a href="{{ route('admin.sanatorium.shop.products.delete', $category->id) }}" class="tip" data-action-delete data-toggle="tooltip" data-original-title="{{{ trans('action.delete') }}}" type="delete">
+								<a href="{{ route('admin.sanatorium.categories.categories.delete', $category->id) }}" class="tip" data-action-delete data-toggle="tooltip" data-original-title="{{{ trans('action.delete') }}}" type="delete">
 									<i class="fa fa-trash-o"></i> <span class="visible-xs-inline">{{{ trans('action.delete') }}}</span>
 								</a>
 							</li>
