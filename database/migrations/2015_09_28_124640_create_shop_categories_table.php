@@ -20,30 +20,41 @@ class CreateShopCategoriesTable extends Migration {
 			$table->timestamps();
 		});
 
+		$attributeNamespace = Sanatorium\Categories\Models\Category::getEntityNamespace();
+
 		$defaultAttributes = [
 			[
-				'name' 		=> 'Category title',
-				'slug' 		=> 'category_title',
-				'type' 		=> 'input',
-				'enabled' 	=> 1
+				'name' 			=> 'Category title',
+				'slug' 			=> 'category_title',
+				'description' 	=> 'Category title',
+				'type' 			=> 'input',
+				'enabled' 		=> 1,
+				'namespace' 	=> $attributeNamespace
 			],
 			[
-				'name' 		=> 'Category description',
-				'slug' 		=> 'category_description',
-				'type' 		=> 'textarea',
-				'enabled' 	=> 1
+				'name' 			=> 'Category description',
+				'slug' 			=> 'category_description',
+				'description' 	=> 'Category description',
+				'type' 			=> 'textarea',
+				'enabled' 		=> 1,
+				'namespace' 	=> $attributeNamespace
 			],
 			[
-				'name' 		=> 'Category long description',
-				'slug' 		=> 'category_long_description',
-				'type' 		=> 'textarea',
-				'enabled' 	=> 1
+				'name' 			=> 'Category long description',
+				'slug' 			=> 'category_long_description',
+				'description'	=> 'Category long description for category detail page',
+				'type' 			=> 'textarea',
+				'enabled' 		=> 1,
+				'namespace' 	=> $attributeNamespace
 			],
 		];
 
-		$attributes = app('platform.attributes');
+		// Create the attributes
+        $attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
 
-		$attributes->fill($defaultAttributes);
+        foreach( $defaultAttributes as $defaultAttribute ) {
+        	$attribute->create($defaultAttribute);
+        }
 	}
 
 	/**
@@ -54,6 +65,16 @@ class CreateShopCategoriesTable extends Migration {
 	public function down()
 	{
 		Schema::drop('categories');
+
+		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
+
+		$attributeNamespace = Sanatorium\Categories\Models\Category::getEntityNamespace();
+
+        $attributeIds = $attribute->createModel()->where('namespace', $attributeNamespace)->lists('id');
+
+        foreach ($attributeIds as $id) {
+            $attribute->delete($id);
+        }
 	}
 
 }
