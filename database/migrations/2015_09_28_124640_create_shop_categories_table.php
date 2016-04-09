@@ -12,13 +12,38 @@ class CreateShopCategoriesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('shop_categories', function(Blueprint $table)
+		Schema::create('categories', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('parent')->default('0');
 			$table->string('slug');
 			$table->timestamps();
 		});
+
+		$defaultAttributes = [
+			[
+				'name' 		=> 'Category title',
+				'slug' 		=> 'category_title',
+				'type' 		=> 'input',
+				'enabled' 	=> 1
+			],
+			[
+				'name' 		=> 'Category description',
+				'slug' 		=> 'category_description',
+				'type' 		=> 'textarea',
+				'enabled' 	=> 1
+			],
+			[
+				'name' 		=> 'Category long description',
+				'slug' 		=> 'category_long_description',
+				'type' 		=> 'textarea',
+				'enabled' 	=> 1
+			],
+		];
+
+		$attributes = app('platform.attributes');
+
+		$attributes->fill($defaultAttributes);
 	}
 
 	/**
@@ -28,7 +53,7 @@ class CreateShopCategoriesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('shop_categories');
+		Schema::drop('categories');
 	}
 
 }

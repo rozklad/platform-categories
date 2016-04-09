@@ -19,7 +19,7 @@ class Category extends Model implements EntityInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $table = 'shop_categories';
+	protected $table = 'categories';
 
 	/**
 	 * {@inheritDoc}

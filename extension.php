@@ -84,7 +84,8 @@ return [
   */
 
   'require' => [
-    'platform/menus'
+    'platform/menus',
+    'platform/attributes',
   ],
 
   /*
