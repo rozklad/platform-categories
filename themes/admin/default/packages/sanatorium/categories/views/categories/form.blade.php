@@ -100,51 +100,68 @@
 					{{-- Tab: General --}}
 					<div role="tabpanel" class="tab-pane fade in active" id="general-tab">
 
-						<fieldset>
+						<div class="row">
 
-							<div class="form-group">
-								
-								<label class="control-label">
+							<div class="col-sm-2">
 
-									{{ trans('sanatorium/categories::categories/model.general.parent') }}
+								<div class="attributes-inline">
 
-								</label>
+									@attributes($category, ['category_icon'])
 
-								<select name="parent" class="form-control">
-									
-									<option value="0">
-										{{ trans('sanatorium/categories::categories/model.root') }}
-									</option>
-
-									@foreach($categories as $parent)
-
-										<option value="{{ $parent->id }}" {{ $category->parent == $parent->id ? 'selected' : '' }} >{{ $parent->category_title }}</option>
-
-									@endforeach
-
-								</select>
+								</div>
 
 							</div>
-									
-							<div class="attributes-inline">
-							
-								@attributes($category, ['category_title'])
-							
-							</div>
 
-							<div class="attributes-inline">
-							
-								@attributes($category, ['category_description'])
-							
-							</div>
+							<div class="col-sm-10">
 
-							<div class="attributes-inline">
-							
-								@attributes($category, ['category_long_description'])
-							
-							</div>
+								<fieldset>
 
-						</fieldset>
+									<div class="form-group">
+
+										<label class="control-label">
+
+											{{ trans('sanatorium/categories::categories/model.general.parent') }}
+
+										</label>
+
+										<select name="parent" class="form-control">
+
+											<option value="0">
+												{{ trans('sanatorium/categories::categories/model.root') }}
+											</option>
+
+											@foreach($categories as $parent)
+
+												<option value="{{ $parent->id }}" {{ $category->parent == $parent->id ? 'selected' : '' }} >{{ $parent->category_title }}</option>
+
+											@endforeach
+
+										</select>
+
+									</div>
+
+									<div class="attributes-inline">
+
+										@attributes($category, ['category_title'])
+
+									</div>
+
+									<div class="attributes-inline">
+
+										@attributes($category, ['category_description'])
+
+									</div>
+
+									<div class="attributes-inline">
+
+										@attributes($category, ['category_long_description'])
+
+									</div>
+
+								</fieldset>
+
+							</div>
+						</div>
 
 					</div>
 

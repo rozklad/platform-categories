@@ -43,7 +43,15 @@ class CreateShopCategoriesTable extends Migration {
 				'name' 			=> 'Category long description',
 				'slug' 			=> 'category_long_description',
 				'description'	=> 'Category long description for category detail page',
-				'type' 			=> 'textarea',
+				'type' 			=> 'wysiwyg',
+				'enabled' 		=> 1,
+				'namespace' 	=> $attributeNamespace
+			],
+			[
+				'name' 			=> 'Category icon',
+				'slug' 			=> 'category_icon',
+				'description'	=> 'Category icon image',
+				'type' 			=> 'image',
 				'enabled' 		=> 1,
 				'namespace' 	=> $attributeNamespace
 			],
