@@ -84,12 +84,12 @@ class CategoryServiceProvider extends ServiceProvider {
 	 */
 	public static function checkEloquentSluggable()
 	{
-		$sluggableTrait = 'Cviebrock\EloquentSluggable\SluggableTrait';
+		$serviceProvider = 'Cviebrock\EloquentSluggable\SluggableServiceProvider';
 
 		/**
 		 * Dependency is not available
 		 */
-		if ( !class_exists($sluggableTrait) ) 
+		if ( !class_exists($serviceProvider) )
 			return false; 
 
 		return true;
