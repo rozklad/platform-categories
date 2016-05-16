@@ -110,6 +110,13 @@
 
 								</div>
 
+								<div class="attributes-inline">
+
+									@attributes($category, ['gallery_test'])
+
+								</div>
+								{{-- --}}
+
 							</div>
 
 							<div class="col-sm-10">
