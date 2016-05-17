@@ -120,11 +120,11 @@ class CategoryRepository implements CategoryRepositoryInterface {
 		if ($messages->isEmpty())
 		{
 			// Save the category
-			$category->fill($data)->save();
-
 			// Resluggify
-            if ( method_exists($category, 'resluggify') )
-            	$category->resluggify()->save();
+			if ( method_exists($category, 'resluggify') )
+				$category->fill($data)->resluggify()->save();
+			else
+				$category->fill($data)->save();
 
 			// Fire the 'sanatorium.categories.category.created' event
 			$this->fireEvent('sanatorium.categories.category.created', [ $category ]);
@@ -157,11 +157,11 @@ class CategoryRepository implements CategoryRepositoryInterface {
 		if ($messages->isEmpty())
 		{
 			// Update the category
-			$category->fill($data)->save();
-
 			// Resluggify
             if ( method_exists($category, 'resluggify') )
-            	$category->resluggify()->save();
+            	$category->fill($data)->resluggify()->save();
+			else
+				$category->fill($data)->save();
 
 			// Fire the 'sanatorium.categories.category.updated' event
 			$this->fireEvent('sanatorium.categories.category.updated', [ $category ]);
