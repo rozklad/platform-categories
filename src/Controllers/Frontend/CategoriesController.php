@@ -3,6 +3,7 @@
 use Platform\Foundation\Controllers\Controller;
 use Sanatorium\Categories\Models\Category;
 use Product;
+use Exception;
 
 class CategoriesController extends Controller {
 
@@ -16,6 +17,9 @@ class CategoriesController extends Controller {
 		return view('sanatorium/categories::index');
 	}
 
+	/**
+	 * @TODO: remake - slug unused
+	 */
 	public function categoryBySlug($slug = null)
 	{
 		$url = \Request::url();
@@ -29,10 +33,17 @@ class CategoriesController extends Controller {
 		return $this->category(Category::getByPath($segments));
 	}
 
+	/**
+	 * @param Sanatorium\Categories\Models\Category $category
+	 * @param int  $per_page
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|null
+	 */
 	public function category($category = null, $per_page = 0)
 	{
 		if ( !$category )
-			return null;
+		{
+			throw new Exception('sanatorium/categories: Category was not specified');
+		}
 
 		return view('sanatorium/categories::index', [
 				'products' => Product::whereHas('categories', function($q) use ($category)
