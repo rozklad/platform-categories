@@ -29,8 +29,11 @@ class CategoriesController extends Controller {
 		return $this->category(Category::getByPath($segments));
 	}
 
-	public function category(Category $category, $per_page = 0)
+	public function category($category = null, $per_page = 0)
 	{
+		if ( !$category )
+			return null;
+
 		return view('sanatorium/categories::index', [
 				'products' => Product::whereHas('categories', function($q) use ($category)
 				{
