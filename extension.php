@@ -67,7 +67,7 @@ return [
   |
   */
 
-  'version' => '2.0.5',
+  'version' => '2.0.6',
 
   /*
   |--------------------------------------------------------------------------
@@ -188,6 +188,11 @@ return [
       foreach ( $categories as $category ) {
         Route::get($category->slug.'/{slug}', ['as' => 'sanatorium.categories.product.view', 'uses' => 'Sanatorium\Shop\Controllers\Frontend\ProductsController@productBySlug']); # product detail
       }
+
+      if ( empty( $categories->toArray() ) ) {
+        Route::get('product/{slug}', ['as' => 'sanatorium.categories.product.view', 'uses' => 'Sanatorium\Shop\Controllers\Frontend\ProductsController@productBySlug']); # product detail
+      }
+
 /*
       foreach( \Fishcat\Shop\Models\Manufacturer::all() as $manufacturer ) {
         Route::get($manufacturer->url, 'Frontend\ShopController@manufacturerBySlug');   # list of manufacturer products
