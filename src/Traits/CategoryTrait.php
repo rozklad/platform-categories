@@ -1,8 +1,9 @@
 <?php namespace Sanatorium\Categories\Traits;
 
-trait CategoryTrait {
+trait CategoryTrait
+{
 
-	public function categories()
+    public function categories()
     {
         return $this->morphToMany('Sanatorium\Categories\Models\Category', 'categorized', 'shop_categorized');
     }
