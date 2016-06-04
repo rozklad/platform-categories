@@ -3,6 +3,7 @@
 use Cartalyst\Support\Traits;
 use Illuminate\Container\Container;
 use Symfony\Component\Finder\Finder;
+use DB;
 
 class CategoryRepository implements CategoryRepositoryInterface {
 
@@ -229,6 +230,68 @@ class CategoryRepository implements CategoryRepositoryInterface {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Because MySQL is not made for hierarchical data by default,
+	 * but we use them for nice-urls, this function is going to produce
+	 * query like this:
+	 *  SELECT t1.slug AS level1, t2.slug as level2, t3.slug as level3, t4.slug as level4, t5.slug as level5
+	 * 	FROM _categories AS t1
+	 * 	LEFT JOIN _categories AS t2 ON t2.parent = t1.id
+	 * 	LEFT JOIN _categories AS t3 ON t3.parent = t2.id
+	 * 	LEFT JOIN _categories AS t4 ON t4.parent = t3.id
+	 * 	LEFT JOIN _categories AS t5 ON t5.parent = t4.id
+	 * 	WHERE t1.parent = 0;
+	 *
+	 * The result looks like this:
+	 * 	  	0 => "ortopedicke-pomucky"
+	 * 		1 => "ortopedicke-pomucky/krcni-limce"
+	 * 		2 => "ortopedicke-pomucky/krcni-limce/krcni-limec-adams"
+	 *
+	 * @param int $category_depth
+	 * @param int $root_depth
+	 */
+	public function getAllUrls($category_depth = 5, $root_depth = 1)
+	{
+		return $this->container['cache']->rememberForever('sanatorium.categories.category.urls', function() use ($category_depth, $root_depth)
+		{
+			$output = [];
+
+			$table = $this->createModel()->getTable();
+
+			$categories = DB::table( $table . " AS t".$root_depth );
+
+			$select = [];
+
+			for ( $i = $root_depth; $i <= $category_depth; $i++ )
+			{
+				$select[] = "t{$i}.slug AS level{$i}";
+
+				if ( $i > $root_depth )
+				{
+					$categories->leftJoin($table . " AS t{$i}", "t{$i}.parent", "=", "t".($i-1).".id");
+				}
+			}
+
+			$categories->select($select);
+
+			$categories->where("t{$root_depth}.parent", 0);
+
+			foreach( $categories->get() as $categoryRow )
+			{
+				$row = [];
+				foreach ( $categoryRow as $index => $slug )
+				{
+					$row[] = $slug;
+					if ( $slug )
+						$output[] = implode('/', $row);
+				}
+			}
+
+			return $output;
+		});
+
 	}
 
 }

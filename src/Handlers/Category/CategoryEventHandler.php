@@ -70,6 +70,8 @@ class CategoryEventHandler extends BaseEventHandler implements CategoryEventHand
 	{
 		$this->app['cache']->forget('sanatorium.categories.category.all');
 
+		$this->app['cache']->forget('sanatorium.categories.category.urls');
+
 		$this->app['cache']->forget('sanatorium.categories.category.'.$category->id);
 	}
 

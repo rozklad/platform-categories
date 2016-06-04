@@ -67,7 +67,7 @@ return [
   |
   */
 
-  'version' => '2.0.7',
+  'version' => '2.0.8',
 
   /*
   |--------------------------------------------------------------------------
@@ -174,38 +174,20 @@ return [
       Route::get('/', ['as' => 'sanatorium.categories.categories.index', 'uses' => 'CategoriesController@index']);
     });
 
-      $categories = Category::all();
+    $categories = app('sanatorium.categories.category')->getAllUrls();
 
-      foreach ( $categories as $category ) {
-        Route::get($category->url, 'Sanatorium\Categories\Controllers\Frontend\CategoriesController@categoryBySlug');     # category page
-      }
+    foreach ( $categories as $category_url ) {
+      Route::get($category_url, 'Sanatorium\Categories\Controllers\Frontend\CategoriesController@categoryBySlug');     # category page
+    }
 
-      foreach ( $categories as $category ) {
-        Route::get($category->slug, ['as' => 'sanatorium.categories.categories.view.' . $category->slug, 'uses' => 'Sanatorium\Categories\Controllers\Frontend\CategoriesController@categoryBySlug']);  # category page
-      }
+    foreach ( $categories as $category_url ) {
+      Route::get($category_url . '/{slug}', ['as' => 'sanatorium.categories.product.view', 'uses' => 'Sanatorium\Categories\Controllers\Frontend\CategoriesController@productBySlug']);     # category page
+    }
 
-      // Essential frontend routes
-      foreach ( $categories as $category ) {
-        Route::get($category->slug.'/{slug}', ['as' => 'sanatorium.categories.product.view', 'uses' => 'Sanatorium\Shop\Controllers\Frontend\ProductsController@productBySlug']); # product detail
-      }
+    if ( empty( $categories ) ) {
+      Route::get('product/{slug}', ['as' => 'sanatorium.categories.product.view', 'uses' => 'Sanatorium\Shop\Controllers\Frontend\ProductsController@productBySlug']); # product detail
+    }
 
-      if ( empty( $categories->toArray() ) ) {
-        Route::get('product/{slug}', ['as' => 'sanatorium.categories.product.view', 'uses' => 'Sanatorium\Shop\Controllers\Frontend\ProductsController@productBySlug']); # product detail
-      }
-
-/*
-      foreach( \Fishcat\Shop\Models\Manufacturer::all() as $manufacturer ) {
-        Route::get($manufacturer->url, 'Frontend\ShopController@manufacturerBySlug');   # list of manufacturer products
-      }
-*/
-      /*
-      // Search results on separate Url
-      Route::get('/search', 'Frontend\ShopController@search');
-
-      Route::group(['prefix' => '/' . trans('fishcat/shop::tags.url.base'), 'namespace' => 'Frontend'], function()
-      {
-        Route::get('{slug}', ['as' => 'shop.tags.show', 'uses' => 'ShopController@tagBySlug']);
-      });*/
   },
 
   /*
