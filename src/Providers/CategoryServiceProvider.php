@@ -16,9 +16,9 @@ class CategoryServiceProvider extends ServiceProvider {
 		);
 
 		// Register the menu category type
-        /*$this->app['platform.menus.manager']->registerType(
+        $this->app['platform.menus.manager']->registerType(
             $this->app['platform.menus.types.category']
-        );*/
+        );
 
 		// Register category as category
         AliasLoader::getInstance()->alias('Category', 'Sanatorium\Categories\Models\Category');  

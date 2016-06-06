@@ -87,6 +87,8 @@ class CategoryType extends AbstractType implements TypeInterface
 
         $categories = $this->app['sanatorium.categories.category']->findAll();
 
+        dd($categories);
+
         foreach ($categories as $category) {
             $category->uri = $category->url === '/' ? null : $category->url;
         }
