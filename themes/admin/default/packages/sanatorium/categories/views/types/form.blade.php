@@ -1,4 +1,3 @@
-@if ( isset($child) && $child )
 <?php
     $childId   = ! empty($child) ? "{$child->id}_%s" : 'new-child_%s';
     $childName = ! empty($child) ? "children[{$child->id}]%s" : 'new-child_%s';
@@ -13,4 +12,3 @@
 		@endforeach
 	</select>
 </div>
-@endif

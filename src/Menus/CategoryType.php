@@ -58,12 +58,14 @@ class CategoryType extends AbstractType implements TypeInterface
     {
         $data = $child->getAttributes();
 
-        if ($categoryId = array_get($data, 'category_id')) {
+        if ($categoryId = array_get($data, 'page_id')) {
             $category = $this->app['sanatorium.categories.category']->find($categoryId);
 
             $child->page_id = $categoryId;
 
             $child->uri = $category->url;
+
+            $child->extension = 'sanatorium/categories';
         }
     }
 
@@ -86,8 +88,6 @@ class CategoryType extends AbstractType implements TypeInterface
         }
 
         $categories = $this->app['sanatorium.categories.category']->findAll();
-
-        dd($categories);
 
         foreach ($categories as $category) {
             $category->uri = $category->url === '/' ? null : $category->url;

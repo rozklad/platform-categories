@@ -67,7 +67,7 @@ return [
   |
   */
 
-  'version' => '2.1.1',
+  'version' => '2.1.2',
 
   /*
   |--------------------------------------------------------------------------
@@ -181,7 +181,7 @@ return [
     }
 
     foreach ( $categories as $category_url ) {
-      Route::get($category_url . '/{slug}', ['as' => 'sanatorium.categories.product.view', 'uses' => 'Sanatorium\Categories\Controllers\Frontend\CategoriesController@productBySlug']);     # category page
+      Route::get($category_url . '/{slug}', ['as' => 'sanatorium.categories.product.view', 'uses' => 'Sanatorium\Shop\Controllers\Frontend\ProductsController@productBySlug']);     # product detail
     }
 
     if ( empty( $categories ) ) {
