@@ -6,6 +6,7 @@ use Platform\Attributes\Traits\EntityTrait;
 use Cartalyst\Support\Traits\NamespacedEntityTrait;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use URL;
+use StorageUrl;
 
 class Category extends Model implements EntityInterface
 {
@@ -108,5 +109,28 @@ class Category extends Model implements EntityInterface
 		}
 
 		return $current;
+	}
+
+	protected $cover_attribute = 'category_icon';
+
+	public $cover_object;
+
+	public $cover_image;
+
+	public function getCategoryIconUrlAttribute()
+	{
+		if ( !$this->{$this->cover_attribute} )	// @todo: thumbnail
+			return null;
+
+		$medium = app('platform.media')->find($this->{$this->cover_attribute});
+
+		if ( !is_object($medium) )
+			return null;
+
+		$this->cover_object = $medium;
+		$this->cover_image = StorageUrl::url($medium->path);
+
+		return $this->cover_image;
+
 	}
 }
