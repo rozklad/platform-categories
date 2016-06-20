@@ -14,13 +14,7 @@
 {{-- Page content --}}
 @section('page')
 
-
-
-
   @if ( class_exists('Product') )
-
-    <?php $i = 0; ?>
-    <?php $cols = 3; ?>
 
     @include('sanatorium/shop::catalog/order')
 
