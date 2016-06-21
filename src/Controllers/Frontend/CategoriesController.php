@@ -41,9 +41,14 @@ class CategoriesController extends Controller
      */
     public function category($category = null, $per_page = 0)
     {
-        if ( !$category )
+        try
         {
-            throw new Exception('sanatorium/categories: Category was not specified');
+            if ( !$category )
+            {
+                throw new Exception('sanatorium/categories: Category was not specified');
+            }
+        } catch (Exception $e) {
+            return redirect()->to('/');
         }
 
         return view('sanatorium/categories::index', [
