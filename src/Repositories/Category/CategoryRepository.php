@@ -294,4 +294,117 @@ class CategoryRepository implements CategoryRepositoryInterface {
 
 	}
 
+	public function getAllUrlsAndNamesTree($category_depth = 5, $root_depth = 1)
+	{
+		$categories = $this->getAllUrlsAndNames($category_depth, $root_depth);
+
+		$output = [];
+
+		foreach( $categories as $key => $value )
+		{
+
+		}
+
+		return $output;
+	}
+
+	public function getAllUrlsAndNames($category_depth = 5, $root_depth = 1)
+	{
+		return $this->container['cache']->rememberForever('sanatorium.categories.category.urls_and_names', function() use ($category_depth, $root_depth)
+		{
+			$output = [];
+
+			$table = $this->createModel()->getTable();
+
+			$categories = DB::table( $table . " AS t".$root_depth );
+
+			$select = [];
+
+			// Select slugs
+			for ( $i = $root_depth; $i <= $category_depth; $i++ )
+			{
+				$select[] = "t{$i}.slug AS level{$i}";
+
+				if ( $i > $root_depth )
+				{
+					$categories->leftJoin($table . " AS t{$i}", "t{$i}.parent", "=", "t".($i-1).".id");
+				}
+			}
+
+			$categories->leftJoin("attributes AS attributes", function($join){
+				$join->on(DB::raw('1'), '=', DB::raw('1'));
+			});
+
+			$select[] = "attributes.id AS category_attribute_id";
+
+			// Select titles
+			for ( $i = $root_depth; $i <= $category_depth; $i++ )
+			{
+				$select[] = "vals{$i}.value AS title{$i}";
+
+				$categories->leftJoin("attribute_values AS vals{$i}", function($join) use ($i) {
+					$join->on("attributes.id", "=", "vals{$i}.attribute_id")
+						->on("vals{$i}.entity_id", "=", "t{$i}.id");
+				});
+			}
+
+			$categories->select($select);
+
+			$categories->where("t{$root_depth}.parent", 0)
+				->where('attributes.slug', "=", 'category_title');
+
+			// @todo: make fluid depth
+			foreach( $categories->get() as $categoryRow )
+			{
+				$slug = [];
+				$title = null;
+
+				$last_level = $output;
+
+				$i = 1;
+
+				$level_slug = $categoryRow->{'level'.$i};
+				$level_title = $categoryRow->{'title'.$i};
+
+				if ( $level_slug )
+				{
+					if ( !isset($output[$level_slug]) )
+					{
+						$output[$level_slug] = [
+							'title' => $level_title,
+							'children' => []
+						];
+					}
+				}
+
+				$i = 2;
+
+				$sublevel_slug = $categoryRow->{'level'.$i};
+				$sublevel_title = $categoryRow->{'title'.$i};
+
+				if ( $level_slug )
+				{
+					if ( !isset($output[$level_slug]) )
+					{
+						$output[$level_slug]  = [
+							'title' => $level_title,
+							'children' => []
+						];
+					}
+
+					if ( !isset($output[$level_slug]['children'][$sublevel_slug]) )
+					{
+						$output[$level_slug]['children'][$sublevel_slug] = [
+							'title' => $sublevel_title
+						];
+					}
+				}
+
+			}
+
+			return $output;
+		});
+
+	}
+
 }
