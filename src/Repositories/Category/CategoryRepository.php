@@ -285,7 +285,7 @@ class CategoryRepository implements CategoryRepositoryInterface {
 				{
 					$row[] = $slug;
 					if ( $slug )
-						$output[] = implode('/', $row);
+						$output[implode('/', $row)] = implode('/', $row);
 				}
 			}
 

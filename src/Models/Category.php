@@ -42,6 +42,14 @@ class Category extends Model implements EntityInterface
 	 */
 	protected static $entityNamespace = 'sanatorium/categories.category';
 
+	/**
+	 * Common attributes
+	 */
+	public $map = [
+		'title' => 'category_title',
+		'description' => 'category_description'
+	];
+
 	public function parents()
 	{
 		return $this->belongsTo('Sanatorium\Categories\Models\Category', 'parent', 'id')->with('parents');
@@ -76,12 +84,7 @@ class Category extends Model implements EntityInterface
 		return '/' . implode('/', self::getFlatParents($cat));
 	}
 
-	/*
-        public function getUrlAttribute()
-        {
-            return route('sanatorium.categories.categories.view.'.$this->slug);
-        }
-      */
+	// return route('sanatorium.categories.categories.view.'.$this->slug);
 
 	public static function getClassesStringBySlug($slug = null)
 	{
