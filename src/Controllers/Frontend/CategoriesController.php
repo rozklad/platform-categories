@@ -51,13 +51,15 @@ class CategoriesController extends Controller
             return redirect()->to('/');
         }
 
+        $per_page = request()->has('per_page') ? request()->get('per_page') : config('sanatorium-shop.per_page');
+
         return view('sanatorium/categories::index', [
             'products' => Product::whereHas('categories', function ($q) use ($category)
             {
                 $q->where('shop_categorized.category_id', $category->id);
-            })->ordered()->paginate(config('sanatorium-shop.per_page')),
+            })->ordered()->paginate($per_page),
             'category' => $category,
-            'per_page' => config('sanatorium-shop.per_page'),
+            'per_page' => $per_page,
             'per_row'  => config('sanatorium-shop.per_row'),
         ]);
     }
