@@ -131,7 +131,7 @@ class Category extends Model implements EntityInterface
 			return null;
 
 		$this->cover_object = $medium;
-		$this->cover_image = StorageUrl::url($medium->path);
+		$this->cover_image = storage_url($medium->path);
 
 		return $this->cover_image;
 
