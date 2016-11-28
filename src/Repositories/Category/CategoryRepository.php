@@ -347,8 +347,7 @@ class CategoryRepository implements CategoryRepositoryInterface {
 
 				$categories->leftJoin("attribute_values AS vals{$i}", function($join) use ($i) {
 					$join->on("attributes.id", "=", "vals{$i}.attribute_id")
-						->on("vals{$i}.entity_id", "=", "t{$i}.id")
-                        ->orderBy("t{$i}.order");
+						->on("vals{$i}.entity_id", "=", "t{$i}.id");
 				});
 			}
 
