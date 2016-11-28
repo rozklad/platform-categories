@@ -67,7 +67,7 @@ return [
   |
   */
 
-  'version' => '3.0.4',
+  'version' => '3.0.5',
 
   /*
   |--------------------------------------------------------------------------
@@ -154,6 +154,8 @@ return [
       {
         Route::get('/' , ['as' => 'admin.sanatorium.categories.categories.all', 'uses' => 'CategoriesController@index']);
         Route::post('/', ['as' => 'admin.sanatorium.categories.categories.all', 'uses' => 'CategoriesController@executeAction']);
+
+        Route::post('order', ['as' => 'admin.sanatorium.categories.categories.order', 'uses' => 'CategoriesController@order']);
 
         Route::get('grid', ['as' => 'admin.sanatorium.categories.categories.grid', 'uses' => 'CategoriesController@grid']);
 

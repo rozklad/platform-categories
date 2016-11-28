@@ -51,7 +51,17 @@ class CategoriesController extends AdminController
      */
     public function index()
     {
+        // tree view in admin
+        return $this->tree();
+
         return view('sanatorium/categories::categories.index');
+    }
+
+    public function tree()
+    {
+        $categories = $this->categories->tree();
+
+        return view('sanatorium/categories::categories.tree', compact('categories'));
     }
 
     /**
@@ -216,6 +226,18 @@ class CategoriesController extends AdminController
         $this->alerts->error($messages, 'form');
 
         return redirect()->back()->withInput();
+    }
+
+    public function order()
+    {
+        $items = request()->get('items');
+
+        foreach( $items as $order => $id )
+        {
+            $this->categories->where('id', $id)->update(['order' => $order]);
+        }
+
+        return response('Success');
     }
 
 }

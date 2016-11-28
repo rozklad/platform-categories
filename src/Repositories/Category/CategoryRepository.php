@@ -219,7 +219,10 @@ class CategoryRepository implements CategoryRepositoryInterface {
 	{
 		$result = [];
 
-		$categories = $this->createModel()->where('parent', $root)->get();
+		$categories = $this->createModel()
+            ->where('parent', $root)
+            ->orderBy('order')
+            ->get();
 
 		foreach( $categories as $category ) {
 
